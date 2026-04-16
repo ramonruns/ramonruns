@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me — Ramon Runs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f5f2ee;--ink:#1a1a18;--accent:#f0a500;--accent2:#e8421a;--muted:#8a8680;--card:#ffffff;--nav-h:64px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(26,26,24,0.97);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;z-index:100;border-bottom:2px solid var(--accent);}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--accent);text-decoration:none;letter-spacing:0.08em;}
+    .nav-links{display:flex;}
+    .nav-links a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.73rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 0.9rem;position:relative;transition:color 0.2s;}
+    .nav-links a::after{content:'';position:absolute;bottom:0;left:0.9rem;right:0.9rem;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.2s;}
+    .nav-links a:hover{color:#fff;}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}.nav-links a.active{color:var(--accent);}
+
+    .page-header{margin-top:var(--nav-h);background:var(--ink);padding:4rem 3rem 5rem;position:relative;overflow:hidden;}
+    .page-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:var(--bg);clip-path:polygon(0 100%,100% 0,100% 100%);}
+    .page-header-inner{max-width:900px;margin:0 auto;position:relative;z-index:1;}
+    .page-tag{font-size:0.67rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;font-weight:500;display:flex;align-items:center;gap:0.75rem;}
+    .page-tag::before{content:'';display:inline-block;width:28px;height:2px;background:var(--accent);}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,5.5rem);color:#fff;letter-spacing:0.04em;}
+    .page-ghost{position:absolute;right:-1rem;top:-1rem;font-family:'Bebas Neue',sans-serif;font-size:12rem;color:rgba(255,255,255,0.04);line-height:1;pointer-events:none;}
+
+    .container{max-width:800px;margin:0 auto;padding:3.5rem 2rem 5rem;}
+
+    /* ABOUT GRID — photo left, text right */
+    .about-grid{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:2.75rem;
+      margin-bottom:3.5rem;
+      align-items:start;
+    }
+
+    /* Photo box */
+    .avatar-box{
+      position:relative;
+      width:220px;
+      aspect-ratio:3/4;
+      flex-shrink:0;
+    }
+    .avatar-photo{
+      width:100%; height:100%;
+      object-fit:cover;
+      object-position:center top;
+      display:block;
+    }
+    /* Orange corner accent top-left */
+    .avatar-box::before{
+      content:'';position:absolute;top:-6px;left:-6px;
+      width:36px;height:36px;
+      background:var(--accent);
+      clip-path:polygon(0 0,100% 0,0 100%);
+      z-index:2;
+    }
+    /* Offset border frame */
+    .avatar-box::after{
+      content:'';position:absolute;
+      top:8px;left:8px;right:-8px;bottom:-8px;
+      border:2px solid var(--accent);
+      z-index:-1;
+    }
+
+    .about-text h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.03em;line-height:1;margin-bottom:0.25rem;}
+    .about-subtitle{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:1.5rem;font-weight:500;}
+    .about-text p{font-size:0.93rem;line-height:1.8;color:#3a3a38;font-weight:300;margin-bottom:1rem;}
+
+    /* FACTS */
+    .facts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3.5rem;}
+    .fact-card{
+      background:var(--card);border:1px solid #e5e0da;
+      padding:1.25rem;text-align:center;
+      position:relative;overflow:hidden;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .fact-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,0.08);}
+    .fact-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.2s;}
+    .fact-card:hover::after{transform:scaleX(1);}
+    .fact-emoji{font-size:1.75rem;margin-bottom:0.5rem;}
+    .fact-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:0.25rem;}
+    .fact-value{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.04em;}
+
+    /* GEAR */
+    .section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;}
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.04em;}
+    .section-line{flex:1;height:2px;background:linear-gradient(to right,var(--ink),transparent);}
+
+    .gear-list{display:flex;flex-direction:column;gap:0.65rem;margin-bottom:3.5rem;}
+    .gear-item{
+      display:flex;align-items:center;gap:1rem;
+      background:var(--card);border:1px solid #e5e0da;
+      padding:1rem 1.25rem;
+      transition:transform 0.2s;
+      position:relative;
+    }
+    .gear-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ink);transition:background 0.2s;}
+    .gear-item:hover{transform:translateX(4px);}
+    .gear-item:hover::before{background:var(--accent);}
+    .gear-cat{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);width:90px;flex-shrink:0;font-weight:500;}
+    .gear-name{font-weight:500;font-size:0.88rem;}
+
+    /* CONTACT */
+    .contact-box{
+      background:var(--ink);padding:2.5rem;text-align:center;
+      position:relative;overflow:hidden;
+    }
+    .contact-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+    .contact-box h3{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#fff;letter-spacing:0.04em;margin-bottom:0.5rem;}
+    .contact-box p{color:rgba(255,255,255,0.4);font-size:0.88rem;margin-bottom:1.5rem;font-weight:300;}
+    .contact-link{
+      display:inline-flex;align-items:center;gap:0.5rem;
+      background:var(--accent);color:var(--ink);text-decoration:none;
+      font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+      padding:0.9rem 2rem;transition:background 0.2s,transform 0.2s;
+    }
+    .contact-link:hover{background:#e09600;transform:translateY(-2px);}
+
+    footer{background:var(--ink);color:rgba(255,255,255,0.3);text-align:center;padding:2rem;font-size:0.75rem;letter-spacing:0.08em;border-top:2px solid var(--accent);}
+    footer span{color:var(--accent);}
+
+    @media(max-width:700px){
+      .about-grid{grid-template-columns:1fr;}
+      .avatar-box{width:160px;aspect-ratio:1;}
+      .facts-grid{grid-template-columns:repeat(2,1fr);}
+      .nav-links a{font-size:0.66rem;padding:0.4rem 0.6rem;}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index.html">Ramon Runs</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="competitions.html">Competitions 2026</a>
+      <a href="pbs.html">PBs</a>
+      <a href="about.html" class="active">About Me</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-ghost">RB</div>
+    <div class="page-header-inner">
+      <p class="page-tag">The Runner</p>
+      <h1 class="page-title">About Me</h1>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="about-grid">
+      <!-- Photo replaces the RB placeholder -->
+      <div class="avatar-box">
+        <img class="avatar-photo" src="hero.jpeg" alt="Ramon running" />
+      </div>
+
+      <div class="about-text">
+        <h2>Ramon</h2>
+        <p class="about-subtitle">Runner · Zug, Switzerland</p>
+        <p>Hi, I'm Ramon — a passionate runner based in Zug. I started running already in my early days. Born in 1997 and probably running by 1999 already. In my childhood years I was part of LK Zug and the middle distance events such as 800m / 1000m / 1500m have always been my favourite disciplines.</p>
+        <p>After retiring from the track I started participating at road races — 10k races up to Half Marathons. My first Half Marathon was in 2014 at 17. As part of a school project in my Masters Studies at PH Luzern I planned and completed my first marathon in 2021. Four years later I ran my first official Marathon in a race in sub 3:30. Hungry for more!</p>
+        <p>My main goal for 2026 is to break <strong>3:15</strong> at SwissCity Marathon Lucerne in October. Every run and every race is a step in that direction.</p>
+      </div>
+    </div>
+
+    <div class="facts-grid">
+      <div class="fact-card">
+        <div class="fact-emoji">📍</div>
+        <p class="fact-label">Based in</p>
+        <p class="fact-value">Zug, CH</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-emoji">🏃</div>
+        <p class="fact-label">Running since</p>
+        <p class="fact-value">1999</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-emoji">📏</div>
+        <p class="fact-label">Weekly avg</p>
+        <p class="fact-value">50–65 km</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-emoji">🎯</div>
+        <p class="fact-label">2026 goal</p>
+        <p class="fact-value">Sub 3:15</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-emoji">⏰</div>
+        <p class="fact-label">Fav run time</p>
+        <p class="fact-value">17:00</p>
+      </div>
+      <div class="fact-card">
+        <div class="fact-emoji">🏟️</div>
+        <p class="fact-label">Club</p>
+        <p class="fact-value">LK Zug</p>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">My Gear</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="gear-list">
+      <div class="gear-item">
+        <span class="gear-cat">Shoes (race)</span>
+        <span class="gear-name">New Balance Fresh Foam X 1080</span>
+      </div>
+      <div class="gear-item">
+        <span class="gear-cat">Shoes (daily)</span>
+        <span class="gear-name">Asics Gel-Nimbus 27</span>
+      </div>
+      <div class="gear-item">
+        <span class="gear-cat">Shoes (daily)</span>
+        <span class="gear-name">Hoka Mach 6</span>
+      </div>
+      <div class="gear-item">
+        <span class="gear-cat">Shoes (daily)</span>
+        <span class="gear-name">Hoka Mach 7</span>
+      </div>
+      <div class="gear-item">
+        <span class="gear-cat">Watch</span>
+        <span class="gear-name">Garmin Forerunner 255</span>
+      </div>
+      <div class="gear-item">
+        <span class="gear-cat">HR Sensor</span>
+        <span class="gear-name">Coros HR Sensor</span>
+      </div>
+    </div>
+
+
+  </div>
+
+  <footer>
+    <p>© 2026 <span>Ramon Runs</span> — Built with ♥ and a lot of km in the legs</p>
+  </footer>
+</body>
+</html>

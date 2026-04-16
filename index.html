@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ramon Runs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f2ee;
+      --ink: #1a1a18;
+      --accent: #f0a500;
+      --muted: #8a8680;
+      --nav-h: 64px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: #fff; min-height: 100vh; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(26,26,24,0.92);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      z-index: 100;
+      border-bottom: 2px solid var(--accent);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem; color: var(--accent);
+      text-decoration: none; letter-spacing: 0.08em;
+    }
+    .nav-links { display: flex; }
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.73rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      position: relative; transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0.9rem; right: 0.9rem;
+      height: 2px; background: var(--accent);
+      transform: scaleX(0); transition: transform 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--accent); }
+
+    /* ── FULLSCREEN HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('hero.jpeg') center center / cover no-repeat;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(26,26,24,0.88) 0%,
+        rgba(26,26,24,0.55) 50%,
+        rgba(26,26,24,0.15) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 2rem) 3.5rem 5rem;
+      z-index: 2;
+      max-width: 560px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.63rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.65rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 2px; background: var(--accent);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6.5vw, 6rem);
+      line-height: 0.9; color: #fff; letter-spacing: 0.03em;
+    }
+    .hero-title .accent { color: var(--accent); }
+
+    .hero-sub {
+      margin-top: 1.4rem;
+      color: rgba(255,255,255,0.52);
+      font-size: 0.83rem; line-height: 1.75;
+      max-width: 320px; font-weight: 300;
+    }
+
+    .hero-cta {
+      margin-top: 1.9rem;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--accent); color: var(--ink);
+      text-decoration: none;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.8rem 1.6rem;
+      transition: background 0.2s, transform 0.2s;
+      width: fit-content;
+    }
+    .hero-cta:hover { background: #e09600; transform: translateX(4px); }
+
+    /* ── STATS BAR ── */
+    .hero-stats {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      z-index: 3;
+      display: flex;
+      background: rgba(20,20,18,0.88);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(240,165,0,0.25);
+    }
+    .hero-stat {
+      flex: 1; padding: 1.1rem 1.75rem;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.2s;
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat:hover { background: rgba(240,165,0,0.06); }
+    .hs-label {
+      font-size: 0.56rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.38);
+      margin-bottom: 0.25rem; font-weight: 500;
+    }
+    .hs-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.45rem; color: #fff;
+      letter-spacing: 0.03em; line-height: 1;
+    }
+    .hs-value .unit { font-size: 0.85rem; color: var(--accent); margin-left: 0.1rem; }
+    .hs-sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); margin-top: 0.18rem; font-weight: 300; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.3);
+      text-align: center; padding: 2rem;
+      font-size: 0.75rem; letter-spacing: 0.08em;
+      border-top: 2px solid var(--accent);
+    }
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow { animation: fadeUp 0.5s 0.1s ease both; }
+    .hero-title   { animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-sub     { animation: fadeUp 0.5s 0.35s ease both; }
+    .hero-cta     { animation: fadeUp 0.5s 0.45s ease both; }
+    .hero-stats   { animation: fadeUp 0.5s 0.55s ease both; }
+
+    @media (max-width: 700px) {
+      .hero-content { padding: calc(var(--nav-h) + 1.5rem) 1.75rem 5rem; max-width: 100%; }
+      .hero-title { font-size: clamp(2.8rem, 10vw, 4.5rem); }
+      .hero-stats { flex-wrap: wrap; }
+      .hero-stat { min-width: 50%; }
+      .nav-links a { font-size: 0.66rem; padding: 0.4rem 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">Ramon Runs</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="competitions.html">Competitions 2026</a>
+      <a href="pbs.html">PBs</a>
+      <a href="about.html">About Me</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Personal Running Journal — 2026</p>
+      <h1 class="hero-title">
+        EAT<br>
+        <span class="accent">PASTA</span><br>
+        RUN<br>
+        <span class="accent">FASTA</span>
+      </h1>
+      <p class="hero-sub">Training logs, competitions and PBs. Every race documented, every split obsessed over.</p>
+      <a href="pbs.html" class="hero-cta">View PBs →</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <p class="hs-label">Weekly Mileage</p>
+        <p class="hs-value">50–65 <span class="unit">km</span></p>
+        <p class="hs-sub">Current training block</p>
+      </div>
+      <div class="hero-stat">
+        <p class="hs-label">Next Race</p>
+        <p class="hs-value">10 May 2026</p>
+        <p class="hs-sub">Wings for Life World Run, Zug</p>
+      </div>
+      <div class="hero-stat">
+        <p class="hs-label">Marathon PB</p>
+        <p class="hs-value">3:27:21</p>
+        <p class="hs-sub">SwissCity Marathon Luzern, Okt 2025</p>
+      </div>
+      <div class="hero-stat">
+        <p class="hs-label">Season Goal</p>
+        <p class="hs-value">Sub 3:15</p>
+        <p class="hs-sub">SwissCity Marathon Luzern 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 <span>Ramon Runs</span> — Built with ♥ and a lot of km in the legs</p>
+  </footer>
+
+</body>
+</html>
